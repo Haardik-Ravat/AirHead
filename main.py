@@ -3,21 +3,20 @@ from discord.ext import commands
 import music
 import os
 
-client = discord.Client()
 
-@client.event
+bot=commands.Bot(command_prefix = ">")
+status='hi'
+
+@bot.event
 async def on_ready():
-    print('We have logged in as {0.user}'.format(client))
-
-@client.event
-async def on_message(message):
-    if message.author == client.user:
-        return
-
-    if message.content.startswith('>'):
-        await message.channel.send('Hello!')
+    print('Online')
 
 
 
-client.run("OTA4NTc0NzkzNDE3MjYxMDU3.YY3uNw.hmuW3WDpjZq_X9ilq4z_QkNEzmo")
+@bot.command()
+async def hello(ctx):
+    await ctx.channel.send("Hi! " + str(ctx.author.mention))
+
+
+bot.run("OTA4NTc0NzkzNDE3MjYxMDU3.YY3uNw.hmuW3WDpjZq_X9ilq4z_QkNEzmo")
 
