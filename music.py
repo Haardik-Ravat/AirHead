@@ -3,7 +3,7 @@ from discord.ext import commands
 import youtube_dl
 import os
 
-# client = commands.Bot(command_prefix=">")
+
 
 
 class music(commands.Cog):
@@ -21,7 +21,7 @@ class music(commands.Cog):
             await ctx.voice_client.moveto(voice_channel)
 
     @commands.command()
-    async def disconnect(self, ctx):
+    async def dc(self, ctx):
         await ctx.voice_client.disconnect()
 
     @commands.command()
@@ -40,16 +40,15 @@ class music(commands.Cog):
         # await voiceChannel.connect()
         #voice = discord.utils.get(client.voice_clients, guild=ctx.guild)
 
-        FFMPEG_OPTIONS = {
-            'before_options': '-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5', 'options': '-vn'}
+        FFMPEG_OPTIONS = {'before_options': '-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5', 'options': '-vn'}
         ydl_opts = {
             'format': 'bestaudio/best'
         }
         vc = ctx.voice_client
         with youtube_dl.YoutubeDL(ydl_opts) as ydl:
-            info = ydl.extract_info(url, download=True)
+            info = ydl.extract_info(url, download=False)
             url2 = info['formats'][0]['url']
-            source = await discord.FFmpegPCMAudio.from_probe(url2, **FFMPEG_OPTIONS)
+            source = await discord.FFmpegOpusAudio.from_probe(url2, **FFMPEG_OPTIONS)
             vc.play(source)
             # ydl.download([url])
         # for file in os.listdir("./"):
